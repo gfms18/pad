@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-light bg-light" style="background-color:#2C2C2C  !important; height: 75px !important; margin-bottom: 30px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="padcentral.html">
+                    <img src="https://lh3.googleusercontent.com/pw/AM-JKLVHBuwcaN5Enimiu-okWrFgdve5aL5c_DUTY21n4QN8FJY1KdKwNVe94XY-4ZqK3-gNCs95ndeDao_JGr0K1JDxA3HjHoqG0tXl2hZqpCUg_XYPaDcwaJ9zjQr6o5So5M4RUUnegRSRQPk_t6pleKa2aA=s866-no" alt="" style="margin: 0; height: 60px; padding-bottom: 10px !important;" width="60"
+                    class="d-inline-block align-text-top">
+                </a>
+            </div>
+        </nav>
+	<form action="/adicionarArquivo" method="POST" enctype="multipart/form-data"
+		style="margin-top: 30px; margin-bottom: 30px;">
+		<h1>adicione um arquivo</h1>
+		<div th:object="${documentacao}">
+			<p>Tipo do documento</p>
+			<div style="width: 30%;">
+				<select class="form-control" id="exampleFormControlSelect2" name="nomeArquivo"
+					style="margin-bottom: 30px;">
+					<option th:each="nome :${T(br.com.via1.pad.models.NomeArquivo).values()}" th:value="${nome}"
+						th:text="${nome.displayValue}"></option>
+				</select>
+
+				<p>Selecione o arquivo</p>
+				<div class="mb-3">
+					<input type="file" class="form-control" name="fileCurriculo" id="formFile">
+				</div>
+				<input th:field="*{id}" type="hidden" name="id">
+			</div>
+		</div>
+		<button type="submit" class="btn btn-success">Adicionar</button>
+
+	</form>
+	<h4>Arquivos anexados a este documento:</h4>
+	<div th:object="${documentacao}">
+		<table>
+			<tr th:each="arq : ${listaArquivos}">
+
+				<td><span th:text="|${arq.nomeArquivo.displayValue}: |" style=" font-weight: 700;"></span>
+					<span th:text="${arq.nomeOriginalArquivo}"></span>
+				</td>
+
+
+
+			</tr>
+
+		</table>
+	</div>
+</body>
+
+</html>
