@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Interno</h1>
+    
+    	<table class="table" style="border-radius: 10px;">
+		<h1>documentos cadastrados</h1>
+		<thead class="table-dark" style="border-radius: 10px;">
+			<tr style="text-align: center;">
+				<th scope="col">Mês</th>
+				<th scope="col">Ano</th>
+				<th scope="col">Status</th>
+				<th scope="col">Observações</th>
+
+			</tr>
+		</thead>
+		<tbody style="text-align: center;">
+			<tr th:each="docs : ${listaDocumentos}">
+				<td th:text="${docs.mes}" style="font-size: 11px;"></td>
+				<td th:text="${docs.ano}" style="font-size: 11px;"></td>
+				<td th:text="${docs.status}" style="font-size: 11px;"></td>
+				<td><a class="btn btn-dark" th:href="|/interno/situacaoDocumento/?id=${docs.id}|"><i class="bi bi-eye"></i>
+						Observações</a></td>
+				
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

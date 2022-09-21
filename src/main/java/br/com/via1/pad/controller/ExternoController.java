@@ -28,7 +28,7 @@ import br.com.via1.pad.models.Empresa;
 
 @Controller
 
-public class DocumentacaoController {
+public class ExternoController {
 	
 	@Autowired
 	private DocumentacaoDAO documentacaoDAO;
@@ -44,7 +44,7 @@ public class DocumentacaoController {
 	}
 
 	//pagina
-	@GetMapping("/adicionarArquivo")
+	@GetMapping("/externo/adicionarArquivo")
 	public String adicionarArquivo(Integer id, Model model) {
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		model.addAttribute("documentacao", documentacao);
@@ -56,7 +56,7 @@ public class DocumentacaoController {
 	@PostMapping("/criarDocumentacao")
 	public String criarDocumentacao(Documentacao documentacao){		
 		this.documentacaoDAO.save(documentacao);		
-		return "redirect:/adm/home";
+		return "redirect:/externo";
 	}
 	
 	@GetMapping("/exibirArquivo/{idArquivo}")
@@ -69,21 +69,16 @@ public class DocumentacaoController {
 	//metodo
 	@GetMapping("/apagarDocumentacao/{id}")
 	public String apagarDocumentacao(Documentacao id) {
+		
+		for(Arquivo arq : this.arquivoDAO.findAllByDocumentacao(this.documentacaoDAO.getById(id.getId()))) {
+			this.arquivoDAO.delete(arq);
+		}
+		
 		this.documentacaoDAO.delete(id);
-		return "redirect:/adm/home";
+		return "redirect:/externo";
 	}
 	
-	//metodo
-//	@GetMapping("/editarDocumento/{id}")
-//	public ModelAndView editarDocumento(@PathVariable(name = "id") Integer id, Model model) {
-//		ModelAndView editView = new ModelAndView("editar_documento");
-//		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
-//		editView.addObject("documentacao", documentacao);
-//		return editView;
-//	}
-	
-	
-	@GetMapping("/editarDocumento")
+	@GetMapping("/externo/editarDocumento")
 	public String editarDocumento(Integer id, Model model) {
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		model.addAttribute("documentacao", documentacao);
@@ -91,19 +86,11 @@ public class DocumentacaoController {
 		return "editar_documento";
 	}
 	
-	@GetMapping("/situacaoDocumento")
+	@GetMapping("/externo/situacaoDocumento")
 	public String situacaoDocumento(Integer id, Model model) {
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		model.addAttribute("documentacao", documentacao);
 		return "situacao";
-	}
-	
-	@PostMapping("/salvarSituacao")
-	public String salvarSituação(Documentacao documentacao) {
-		
-		this.documentacaoDAO.save(documentacao);
-		
-		return "redirect:/adm/home";
 	}
 	
 	//metodo
@@ -119,13 +106,13 @@ public class DocumentacaoController {
 		this.arquivoDAO.save(arquivo);
 		
 		
-		return "redirect:/adicionarArquivo/?id=" + id;
+		return "redirect:/externo/adicionarArquivo/?id=" + id;
 	}
 	
 	@GetMapping("/apagarArquivo")///{idDocument}, String idDocumento /idDocumento=*{id}
 	public String apagarArquivo(Arquivo idArquivo, Documentacao id) {
 		this.arquivoDAO.delete(idArquivo);
-		return "redirect:/editarDocumento/?id=" + id.getId();
+		return "redirect:/externo/editarDocumento/?id=" + id.getId();
 	}
 	
 }

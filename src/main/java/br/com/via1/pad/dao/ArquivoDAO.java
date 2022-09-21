@@ -12,5 +12,6 @@ public interface ArquivoDAO extends JpaRepository<Arquivo, Integer> {
 
 
 	List<Arquivo> findAllByDocumentacao(Sort by, Documentacao documentacao);
-
+	
+	List<Arquivo> findAllByDocumentacao(Documentacao documentacao);
 }

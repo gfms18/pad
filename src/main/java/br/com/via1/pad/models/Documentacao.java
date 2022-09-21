@@ -24,8 +24,7 @@ public class Documentacao {
 	
 	private String descricao;
 
-	@Enumerated
-	private Status status;
+	private String status;
 
 	public Integer getId() {
 		return id;
@@ -59,13 +58,15 @@ public class Documentacao {
 		this.descricao = descricao;
 	}
 
-	public Status getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	
 
 	
 

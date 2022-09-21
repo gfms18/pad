@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.via1.pad.dao.DocumentacaoDAO;
 import br.com.via1.pad.dao.UsuarioDAO;
 import br.com.via1.pad.models.Documentacao;
+import br.com.via1.pad.models.Tipo;
 import br.com.via1.pad.models.Usuario;
 
 @Controller
@@ -30,27 +31,34 @@ public class AcessoController {
 		return "login";
 	}
 	
-	@GetMapping("/adm/home")
-	public String home(Model model) {
+	@GetMapping("/externo")
+	public String externoHome(Model model) {
 		
 		List<Documentacao> listaDocumentos = this.documentacaoDAO.findAll();
 
 		model.addAttribute("listaDocumentos", listaDocumentos );
 		
-		return "home";
+		return "homeExterno";
 	}
+	
 	
 	
 	@PostMapping("/login")
 	public String login(Usuario usuario, RedirectAttributes ra, HttpSession session) {
 		usuario = this.usuarioDAO.findByLoginAndSenha(usuario.getLogin(), usuario.getSenha());
 		
-		if(usuario != null) {
+		if(usuario != null && usuario.getTipo().equals(Tipo.INTERNO)) {
 			session.setAttribute("usuariologado", usuario);
-			return "redirect:/adm/home";
+			return "redirect:/interno";
+		} else if(usuario != null && usuario.getTipo().equals(Tipo.EXTERNO)) {
+			session.setAttribute("usuarioLogado", usuario);
+			return "redirect:/externo";
 		} else {
 			ra.addFlashAttribute("mensagem", "Login ou senha invalidos.");
 			return "redirect:/";
 		}
+		
+		
+		
 	}
 }
