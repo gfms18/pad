@@ -21,36 +21,26 @@ import br.com.via1.pad.models.Usuario;
 public class AcessoController {
 
 	@Autowired
-	private UsuarioDAO usuarioDAO;
+	private UsuarioDAO usuarioDAO; 
 	
 	@Autowired
 	private DocumentacaoDAO documentacaoDAO;
 	
 	@GetMapping("/")
-	public String retornarLogin() {
+	public String retornarLogin() { 
 		return "login";
 	}
 	
-	@GetMapping("/externo")
-	public String externoHome(Model model) {
+	@PostMapping("/login")  
+	public String login(String login, String senha, RedirectAttributes ra, HttpSession session) {
+		Usuario usuario = this.usuarioDAO.findByLoginAndSenha(login, senha);
 		
-		List<Documentacao> listaDocumentos = this.documentacaoDAO.findAll();
-
-		model.addAttribute("listaDocumentos", listaDocumentos );
-		
-		return "homeExterno";
-	}
-	
-	
-	
-	@PostMapping("/login")
-	public String login(Usuario usuario, RedirectAttributes ra, HttpSession session) {
-		usuario = this.usuarioDAO.findByLoginAndSenha(usuario.getLogin(), usuario.getSenha());
-		
-		if(usuario != null && usuario.getTipo().equals(Tipo.INTERNO)) {
-			session.setAttribute("usuariologado", usuario);
+		if(usuario != null && usuario.getTipo().equals(Tipo.INTERNO)) {  
+			session.setAttribute("usuarioLogado", usuario);
 			return "redirect:/interno";
-		} else if(usuario != null && usuario.getTipo().equals(Tipo.EXTERNO)) {
+		}
+		
+		if(usuario != null && usuario.getTipo().equals(Tipo.EXTERNO)) {
 			session.setAttribute("usuarioLogado", usuario);
 			return "redirect:/externo";
 		} else {
@@ -60,5 +50,16 @@ public class AcessoController {
 		
 		
 		
+	} 
+	
+	@GetMapping("/acessoNegado")
+	public String acessoNegado() {
+		return "acesso_negado";
+	}
+	
+	@GetMapping("/sair")
+	public String sair(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class AcessoConfig implements WebMvcConfigurer{
 
-	public void addInterceptors(InterceptorRegistry registry) {
+	public void addInterceptors(InterceptorRegistry registry) { 
 		registry.addInterceptor(new AdminInterceptor())
 			.addPathPatterns(new String[]{"/interno", "/interno/*", "/externo", "/externo/*"});
 }

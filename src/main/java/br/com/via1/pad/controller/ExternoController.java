@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,7 @@ import br.com.via1.pad.dao.EmpresaDAO;
 import br.com.via1.pad.models.Arquivo;
 import br.com.via1.pad.models.Documentacao;
 import br.com.via1.pad.models.Empresa;
+import br.com.via1.pad.models.Usuario;
 
 @Controller
 
@@ -41,6 +44,19 @@ public class ExternoController {
 	@GetMapping("/criarDocumentacao")
 	public String criarDocumentacao() {
 		return "criar_documentacao";
+	}
+	
+	@GetMapping("/externo")
+	public String externoHome(Model model, HttpServletRequest request ) { 
+		
+		List<Documentacao> listaDocumentos = this.documentacaoDAO.findAll();
+		
+		model.addAttribute("listaDocumentos", listaDocumentos );
+		
+		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		model.addAttribute("nome", usuario);
+		
+		return "homeExterno";
 	}
 
 	//pagina

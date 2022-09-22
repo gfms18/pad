@@ -5,9 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Interno</h1>
+<nav class="navbar navbar-light bg-light" style="background-color:#2C2C2C  !important; height: 75px !important; margin-bottom: 30px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="padcentral.html">
+                    <img src="https://lh3.googleusercontent.com/pw/AM-JKLVHBuwcaN5Enimiu-okWrFgdve5aL5c_DUTY21n4QN8FJY1KdKwNVe94XY-4ZqK3-gNCs95ndeDao_JGr0K1JDxA3HjHoqG0tXl2hZqpCUg_XYPaDcwaJ9zjQr6o5So5M4RUUnegRSRQPk_t6pleKa2aA=s866-no" alt="" style="margin: 0; height: 60px; padding-bottom: 10px !important;" width="60"
+                    class="d-inline-block align-text-top">
+                </a>
+                <a href="/sair">Sair</a>
+            </div>
+        </nav>
+    <h1>Bem vindo <span  th:text="${nome.nome}"></span></h1> 
     
     	<table class="table" style="border-radius: 10px;">
 		<h1>documentos cadastrados</h1>
@@ -18,7 +29,7 @@
 				<th scope="col">Status</th>
 				<th scope="col">Observações</th>
 
-			</tr>
+			</tr> 
 		</thead>
 		<tbody style="text-align: center;">
 			<tr th:each="docs : ${listaDocumentos}">

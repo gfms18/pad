@@ -44,6 +44,29 @@
 			</form>
 			
 		     
+		     
+		 <table class="table" style="border-radius: 10px; margin-top: 30px;">
+			<thead class="table-dark" style="border-radius: 10px;">
+				<tr style="text-align: center;">
+					<th scope="col">Nome</th>
+					<th scope="col">Tipo</th>
+					<th scope="col">baixar arquivo</th>
+				</tr>
+			</thead>
+			<tbody style="text-align: center;">
+				<tr th:each="arq : ${listaArquivos}">
+					<td th:text="${arq.nomeOriginalArquivo}" style="font-size: 11px;"></td>
+					<td th:text="${arq.nomeArquivo.displayValue}" style="font-size: 11px;"></td>
+					<td><a class="btn btn-primary" th:href="|/exibirArquivo/${arq.idArquivo}|"
+							style="font-size: 11px;"><i class="bi bi-download"></i> baixar</a></td>
+
+
+
+
+					</td>
+				</tr>
+			</tbody>
+		</table>
     </div>
     
 </body>
