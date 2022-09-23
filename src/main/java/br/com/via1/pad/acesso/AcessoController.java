@@ -2,6 +2,7 @@ package br.com.via1.pad.acesso;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +33,22 @@ public class AcessoController {
 	}
 	
 	@PostMapping("/login")  
-	public String login(String login, String senha, RedirectAttributes ra, HttpSession session) {
+	public String login(String login, String senha, RedirectAttributes ra, HttpSession session, HttpServletRequest request) {
 		Usuario usuario = this.usuarioDAO.findByLoginAndSenha(login, senha);
 		
-		if(usuario != null && usuario.getTipo().equals(Tipo.INTERNO)) {  
+		if(usuario != null && usuario.getTipo().equals(Tipo.INTERNO)) {
 			session.setAttribute("usuarioLogado", usuario);
 			return "redirect:/interno";
-		}
-		
-		if(usuario != null && usuario.getTipo().equals(Tipo.EXTERNO)) {
+		} else if(usuario != null && usuario.getTipo().equals(Tipo.EXTERNO)) {
 			session.setAttribute("usuarioLogado", usuario);
 			return "redirect:/externo";
 		} else {
 			ra.addFlashAttribute("mensagem", "Login ou senha invalidos.");
 			return "redirect:/";
+			//
 		}
+		
+		
 		
 		
 		

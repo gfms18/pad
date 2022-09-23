@@ -1,7 +1,7 @@
 package br.com.via1.pad.models;
 
 
-public enum NomeArquivo {
+public enum NomeArquivo { 
 	CONVENCAO_COLETIVA_DE_TRABALHO_VIGENTE("1. Convenção Coletiva de Trabalho vigente"),
 	CERTIDAO_NEGATIVA_DE_DEBITO_FEDERAL("2. Certidão Negativa de Débito Federal"),
 	CERTIDAO_NEGATIVA_DE_DEBITO_JUNTO_A_PREVIDENCIA("3. Certidão Negativa de Débito junto à Previdência"),
