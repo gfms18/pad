@@ -1,6 +1,8 @@
 package br.com.via1.pad.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.via1.pad.dao.ArquivoDAO;
 import br.com.via1.pad.dao.DocumentacaoDAO;
-import br.com.via1.pad.dao.EmpresaDAO;
 import br.com.via1.pad.models.Arquivo;
 import br.com.via1.pad.models.Documentacao;
 import br.com.via1.pad.models.Empresa;
@@ -32,68 +33,69 @@ import br.com.via1.pad.models.Usuario;
 @Controller
 
 public class ExternoController {
-	
+
 	@Autowired
 	private DocumentacaoDAO documentacaoDAO;
-	
+
 	@Autowired
 	private ArquivoDAO arquivoDAO;
-	
-	
-	//pagina
-	@GetMapping("/criarDocumentacao")
+
+	// pagina
+	@GetMapping("/externo/criarDocumentacao")
 	public String criarDocumentacao() {
 		return "criar_documentacao";
 	}
-	
+
 	@GetMapping("/externo")
-	public String externoHome(Model model, HttpServletRequest request ) { 
-		
-		List<Documentacao> listaDocumentos = this.documentacaoDAO.findAll();
-		
-		model.addAttribute("listaDocumentos", listaDocumentos );
-		
+	public String externoHome(Model model, HttpServletRequest request) {
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		List<Documentacao> listaDocumentos = this.documentacaoDAO.findAllByUsuario(Sort.by("ano").descending(),
+				usuario);
+
+		model.addAttribute("listaDocumentos", listaDocumentos);
+
 		model.addAttribute("nome", usuario);
-		
+
 		return "homeExterno";
 	}
 
-	//pagina
+	// pagina
 	@GetMapping("/externo/adicionarArquivo")
 	public String adicionarArquivo(Integer id, Model model) {
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		model.addAttribute("documentacao", documentacao);
-		model.addAttribute("listaArquivos", arquivoDAO.findAllByDocumentacao(Sort.by("nomeArquivo"),documentacao));
+		model.addAttribute("listaArquivos", arquivoDAO.findAllByDocumentacao(Sort.by("nomeArquivo"), documentacao));
 		return "adicionar_arquivo";
 	}
-	
-	//metodo
-	@PostMapping("/criarDocumentacao")
-	public String criarDocumentacao(Documentacao documentacao){		
-		this.documentacaoDAO.save(documentacao);		
+
+	// metodo
+	@PostMapping("/externo/criarDocumentacao")
+	public String criarDocumentacao(Documentacao documentacao, HttpServletRequest request) {
+		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		documentacao.setUsuario(usuario);
+		this.documentacaoDAO.save(documentacao);
 		return "redirect:/externo";
 	}
-	
+
 	@GetMapping("/exibirArquivo/{idArquivo}")
 	@ResponseBody
-	public byte[] exibirArquivo(@PathVariable("idArquivo") Integer idArquivo){
+	public byte[] exibirArquivo(@PathVariable("idArquivo") Integer idArquivo) {
 		Arquivo arquivo = this.arquivoDAO.getOne(idArquivo);
 		return arquivo.getArquivo();
 	}
-	
-	//metodo
-	@GetMapping("/apagarDocumentacao/{id}")
+
+	// metodo
+	@GetMapping("/externo/apagarDocumentacao/{id}")
 	public String apagarDocumentacao(Documentacao id) {
-		
-		for(Arquivo arq : this.arquivoDAO.findAllByDocumentacao(this.documentacaoDAO.getById(id.getId()))) {
+
+		for (Arquivo arq : this.arquivoDAO.findAllByDocumentacao(this.documentacaoDAO.getById(id.getId()))) {
 			this.arquivoDAO.delete(arq);
 		}
-		
+
 		this.documentacaoDAO.delete(id);
 		return "redirect:/externo";
 	}
-	
+
 	@GetMapping("/externo/editarDocumento")
 	public String editarDocumento(Integer id, Model model) {
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
@@ -101,34 +103,34 @@ public class ExternoController {
 		model.addAttribute("listaArquivos", arquivoDAO.findAllByDocumentacao(Sort.by("nomeArquivo"), documentacao));
 		return "editar_documento";
 	}
-	
+
 	@GetMapping("/externo/situacaoDocumento")
 	public String situacaoDocumento(Integer id, Model model) {
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		model.addAttribute("documentacao", documentacao);
 		return "situacao";
 	}
-	
-	//metodo
-	@PostMapping("/adicionarArquivo")
-	public String adicionarArquivo(Arquivo arquivo, @RequestParam("fileCurriculo") MultipartFile file, Integer id) throws IOException {
-		
-		System.out.println(id);
+
+	// metodo
+	@PostMapping("/externo/adicionarArquivo")
+	public String adicionarArquivo(Arquivo arquivo, @RequestParam("fileCurriculo") MultipartFile file, Integer id)
+			throws IOException {
 		arquivo.setArquivo(file.getBytes());
 		arquivo.setNomeOriginalArquivo(file.getOriginalFilename());
-		Documentacao documentacao  = this.documentacaoDAO.findDocumentacaoById(id);
-		System.out.println(documentacao.getId());
+		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		arquivo.setDocumentacao(documentacao);
+		documentacao.setUltimaAlteracao(LocalDateTime.now());
 		this.arquivoDAO.save(arquivo);
-		
-		
+
 		return "redirect:/externo/adicionarArquivo/?id=" + id;
 	}
-	
-	@GetMapping("/apagarArquivo")///{idDocument}, String idDocumento /idDocumento=*{id}
+
+	@GetMapping("/externo/apagarArquivo") /// {idDocument}, String idDocumento /idDocumento=*{id}
 	public String apagarArquivo(Arquivo idArquivo, Documentacao id) {
+		Documentacao documentacao = this.documentacaoDAO.getOne(id.getId());
+		documentacao.setUltimaAlteracao(LocalDateTime.now());
 		this.arquivoDAO.delete(idArquivo);
 		return "redirect:/externo/editarDocumento/?id=" + id.getId();
 	}
-	
+
 }

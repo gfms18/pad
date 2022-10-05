@@ -24,14 +24,14 @@
 	</nav>
 
 	<div th:object="${documentacao}">
-		<form action="/criarDocumentacao" method="POST" style="margin-left: 30px;">
+		<form action="/externo/criarDocumentacao" method="POST" style="margin-left: 30px;">
 			<input th:field="*{id}" type="hidden" name="id">
 
 			<label for="exampleFormControlInput1" class="form-label">Mês</label>
 			<input type="text" class="form-control" th:field="*{mes}" name="mes" id="exampleFormControlInput1">
 
 			<label for="exampleFormControlInput1" class="form-label">Ano</label>
-			<input type="text" class="form-control" th:field="*{ano}" name="ano" id="exampleFormControlInput1">
+			<input type="text" class="form-control" data-ls-module="charCounter" maxlength="4" th:field="*{ano}" name="ano" id="exampleFormControlInput1">
 
 			<button type="submit" class="btn btn-success" style="margin-top: 30px; margin-bottom: 30px;">Salvar</button>
 		</form>
@@ -50,9 +50,9 @@
 				<tr th:each="arq : ${listaArquivos}">
 					<td th:text="${arq.nomeOriginalArquivo}" style="font-size: 11px;"></td>
 					<td th:text="${arq.nomeArquivo.displayValue}" style="font-size: 11px;"></td>
-					<td><a class="btn btn-primary" th:href="|/exibirArquivo/${arq.idArquivo}|"
+					<td><a class="btn btn-primary" th:attr="download=${arq.nomeOriginalArquivo}" th:href="|/exibirArquivo/${arq.idArquivo}|"
 							style="font-size: 11px;"><i class="bi bi-download"></i> baixar</a></td>
-					<td><a class="btn btn-danger" th:href="|/apagarArquivo/?idArquivo=${arq.idArquivo}&id=*{id}|"
+					<td><a class="btn btn-danger" th:href="|/externo/apagarArquivo/?idArquivo=${arq.idArquivo}&id=*{id}|"
 							style="font-size: 11px;"><i class="bi bi-trash"></i> apagar </a></td>
 
 

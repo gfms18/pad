@@ -26,16 +26,18 @@
 
 
 
-	<a href="/criarDocumentacao" class="btn btn-success"><i class="bi bi-plus-circle-dotted"></i> Criar documentacao
+	<a href="/externo/criarDocumentacao" class="btn btn-success"><i class="bi bi-plus-circle-dotted"></i> Criar
+		documentacao
 	</a>
 	<table class="table" style="border-radius: 10px;">
 		<h1>documentos cadastrados</h1>
-		
+
 		<thead class="table-dark" style="border-radius: 10px;">
 			<tr style="text-align: center;">
 				<th scope="col">Mês</th>
 				<th scope="col">Ano</th>
 				<th scope="col">Status</th>
+				<th scope="col">Ultima alteração</th>
 				<th scope="col">Observações</th>
 				<th scope="col">Adicionar arquivos</th>
 				<th scope="col">Editar</th>
@@ -48,13 +50,15 @@
 				<td th:text="${docs.mes}" style="font-size: 11px;"></td>
 				<td th:text="${docs.ano}" style="font-size: 11px;"></td>
 				<td th:text="${docs.status}" style="font-size: 11px;"></td>
-				<td><a class="btn btn-dark" th:href="|/externo/situacaoDocumento/?id=${docs.id}|"><i class="bi bi-eye"></i>
+				<td th:text="${docs.ultimaAlteracao}" style="font-size: 11px;"></td>
+				<td><a class="btn btn-dark" th:href="|/externo/situacaoDocumento/?id=${docs.id}|"><i
+							class="bi bi-eye"></i>
 						Observações</a></td>
 				<td><a class="btn btn-success" th:href="|/externo/adicionarArquivo/?id=${docs.id}|"><i
 							class="bi bi-file-earmark-plus"></i> Adicionar Arquivos</a></td>
 				<td><a class="btn btn-secondary" th:href="|/externo/editarDocumento/?id=${docs.id}|"><i
 							class="bi bi-pencil"></i> Editar</a></td>
-				<td><a class="btn btn-danger" th:href="|/apagarDocumentacao/${docs.id}|"><i class="bi bi-trash"></i>
+				<td><a class="btn btn-danger" th:href="|/externo/apagarDocumentacao/${docs.id}|"><i class="bi bi-trash"></i>
 						Apagar</a></td>
 
 			</tr>

@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>Documentações</title>
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
@@ -16,41 +15,34 @@
                     <img src="https://lh3.googleusercontent.com/pw/AM-JKLVHBuwcaN5Enimiu-okWrFgdve5aL5c_DUTY21n4QN8FJY1KdKwNVe94XY-4ZqK3-gNCs95ndeDao_JGr0K1JDxA3HjHoqG0tXl2hZqpCUg_XYPaDcwaJ9zjQr6o5So5M4RUUnegRSRQPk_t6pleKa2aA=s866-no" alt="" style="margin: 0; height: 60px; padding-bottom: 10px !important;" width="60"
                     class="d-inline-block align-text-top">
                 </a>
-			             		<div class="btn-group dropstart">
-			  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-			    Opções
-			  </button>
-			  <ul class="dropdown-menu">
-			    <li><a class="dropdown-item" href="/interno/adicionarEmpresa">Add empresa</a></li>
-			    <li><a class="dropdown-item" href="/sair">Sair</a></li>
-			    
-			  </ul>
-			</div>
-
+                <a href="/sair">Sair</a>
+            </div>
         </nav>
  
-    <h1>Empresas</h1>
     
-		<table class="table table-striped table-hover">
-  <thead>
-    
-      <th scope="col">Nome da empresa</th>
-      <th scope="col">Acessar documentações</th>
+    	<table class="table" style="border-radius: 10px;">
+		<h1>documentos cadastrados</h1>
+		<thead class="table-dark" style="border-radius: 10px;">
+			<tr style="text-align: center;">
+				<th scope="col">Mês</th>
+				<th scope="col">Ano</th>
+				<th scope="col">Status</th>
+				<th scope="col">Ultima alteração</th>
+				<th scope="col">Observações</th>
 
-
-  </thead>
-  <tbody th:each="empr:${listaEmpresas}">
-   
-      <td th:text="${empr.nome}"></td>
-      <td><a th:href="|/interno/acessarDocumentacao/${empr.id}|" class="btn btn-primary">Ver documentação</a></td> 
-
-  </tbody> 
-</table>
-		
-
-	
+			</tr> 
+		</thead>
+		<tbody style="text-align: center;">
+			<tr th:each="docs : ${listaDocumentacao}">
+				<td th:text="${docs.mes}" style="font-size: 11px;"></td>
+				<td th:text="${docs.ano}" style="font-size: 11px;"></td>
+				<td th:text="${docs.status}" style="font-size: 11px;"></td>
+				<td th:text="${docs.ultimaAlteracao}" style="font-size: 11px;"></td>
+				<td><a class="btn btn-dark" th:href="|/interno/situacaoDocumento/${docs.id}|"><i class="bi bi-eye"></i>
+						Observações</a></td>
+				
+			</tr>
+		</tbody>
+	</table>
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-
 </html>
