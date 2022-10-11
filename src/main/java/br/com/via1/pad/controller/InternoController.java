@@ -49,7 +49,7 @@ public class InternoController {
 		
 		model.addAttribute("listaEmpresas", empresas );
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
-		model.addAttribute("nome", usuario);
+		model.addAttribute("usuario", usuario);
 		
 		return "homeInterno";
 	}
@@ -86,6 +86,8 @@ public class InternoController {
 		return arquivo.getArquivo();
 	}
 	
+	//public String salvarArquivo
+	
 	@PostMapping("/salvarSituacao")
 	public String salvarSituação(Documentacao documentacao) {		
 		Documentacao documentacao1 = documentacaoDAO.getOne(documentacao.getId());
@@ -103,6 +105,7 @@ public class InternoController {
 	@PostMapping("/addEmpresa")
 	public String addEmpresa(Usuario usuario) {
 		usuario.setTipo(Tipo.EXTERNO);
+		usuario.setPrimeiroAcesso(true);
 		this.usuarioDAO.save(usuario);
 		return "redirect:/interno";
 	}

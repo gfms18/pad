@@ -3,6 +3,7 @@ package br.com.via1.pad.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,9 @@ public class ExternoController {
 	@GetMapping("/externo")
 	public String externoHome(Model model, HttpServletRequest request) {
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		if(usuario.isPrimeiroAcesso()) {
+			return "redirect:externo/alterarSenha";
+		}
 		List<Documentacao> listaDocumentos = this.documentacaoDAO.findAllByUsuario(Sort.by("ano").descending(),
 				usuario);
 
@@ -73,6 +77,9 @@ public class ExternoController {
 	public String criarDocumentacao(Documentacao documentacao, HttpServletRequest request) {
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
 		documentacao.setUsuario(usuario);
+		
+		documentacao.setUltimaAlteracao(LocalDateTime.now());
+		
 		this.documentacaoDAO.save(documentacao);
 		return "redirect:/externo";
 	}
@@ -119,6 +126,7 @@ public class ExternoController {
 		arquivo.setNomeOriginalArquivo(file.getOriginalFilename());
 		Documentacao documentacao = this.documentacaoDAO.findDocumentacaoById(id);
 		arquivo.setDocumentacao(documentacao);
+		
 		documentacao.setUltimaAlteracao(LocalDateTime.now());
 		this.arquivoDAO.save(arquivo);
 
@@ -128,6 +136,7 @@ public class ExternoController {
 	@GetMapping("/externo/apagarArquivo") /// {idDocument}, String idDocumento /idDocumento=*{id}
 	public String apagarArquivo(Arquivo idArquivo, Documentacao id) {
 		Documentacao documentacao = this.documentacaoDAO.getOne(id.getId());
+		
 		documentacao.setUltimaAlteracao(LocalDateTime.now());
 		this.arquivoDAO.delete(idArquivo);
 		return "redirect:/externo/editarDocumento/?id=" + id.getId();

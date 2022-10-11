@@ -22,13 +22,14 @@
 			  </button>
 			  <ul class="dropdown-menu">
 			    <li><a class="dropdown-item" href="/interno/adicionarEmpresa">Add empresa</a></li>
+			    <li><a class="dropdown-item" href="/interno/alterarSenha">Alterar senha</a></li>
 			    <li><a class="dropdown-item" href="/sair">Sair</a></li>
 			    
 			  </ul>
 			</div>
 
         </nav>
- 
+ 	<h1 th:object="${usuario}">Bem vindo <span th:text="${usuario.nome}" ></span></h1>
     <h1>Empresas</h1>
     
 		<table class="table table-striped table-hover">

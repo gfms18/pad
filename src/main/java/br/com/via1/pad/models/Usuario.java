@@ -17,10 +17,21 @@ public class Usuario {
 	
 	private String login;
 	
+	private boolean primeiroAcesso;
+	
 	@Enumerated
 	private Tipo tipo;
 	
 	private String senha;
+
+
+	public boolean isPrimeiroAcesso() {
+		return primeiroAcesso;
+	}
+
+	public void setPrimeiroAcesso(boolean primeiroAcesso) {
+		this.primeiroAcesso = primeiroAcesso;
+	}
 
 	public Integer getId() {
 		return id;

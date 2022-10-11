@@ -34,7 +34,6 @@ public class Documentacao {
 
 	private String status;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private LocalDateTime ultimaAlteracao;
 
 	public Integer getId() {
@@ -92,6 +91,14 @@ public class Documentacao {
 	public void setUltimaAlteracao(LocalDateTime ultimaAlteracao) {
 		this.ultimaAlteracao = ultimaAlteracao;
 	}
+
+
+
+
+	
+
+
+	
 
 	
 
